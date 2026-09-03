@@ -137,6 +137,15 @@
     padding:2px 7px;
     border-radius:5px;
     color:#fff;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    cursor:pointer;
+    transition:filter .15s ease, transform .15s ease;
+  }
+  .source-badge:hover{
+    filter:brightness(1.12);
+    transform:translateY(-1px);
   }
   .src-jtwc{background:#2563eb;}
   .src-hko{background:#0891b2;}
@@ -426,8 +435,9 @@
   }
   .active-card .status-line{
     font-size:13px;
-    color:#3a3f47;
+    color:var(--ink);
     line-height:1.5;
+    font-weight:500;
   }
   .active-card .status-line b{color:var(--active-accent);}
   .active-card .card-footer{
@@ -483,7 +493,7 @@
   }
   .active-card .forecast-line{
     font-size:12px;
-    color:#3a3f47;
+    color:var(--ink);
     background:rgba(11,61,99,0.05);
     border-left:3px solid var(--navy-2);
     padding:7px 10px;
@@ -491,7 +501,6 @@
     line-height:1.55;
   }
   body.dark .active-card .forecast-line{
-    color:var(--ink);
     background:rgba(127,184,236,0.08);
   }
   .active-card .cat-tag{
@@ -806,9 +815,9 @@
         </div>
 
         <div class="source-badges">
-          <span class="source-badge src-jtwc">JTWC</span>
-          <span class="source-badge src-hko">HKO</span>
-          <span class="source-badge src-jma">JMA</span>
+          <a class="source-badge src-jtwc" href="https://www.metoc.navy.mil/jtwc/jtwc.html" target="_blank" rel="noopener">JTWC ↗</a>
+          <a class="source-badge src-hko" href="https://www.hko.gov.hk/en/informtc/tcMain.htm" target="_blank" rel="noopener">HKO ↗</a>
+          <a class="source-badge src-jma" href="https://www.jma.go.jp/bosai/map.html#contents=typhoon&lang=en" target="_blank" rel="noopener">JMA ↗</a>
         </div>
 
         <div class="severity-gauge">
@@ -876,8 +885,8 @@
         </div>
 
         <div class="source-badges">
-          <span class="source-badge src-jtwc">JTWC</span>
-          <span class="source-badge src-jma">JMA</span>
+          <a class="source-badge src-jtwc" href="https://www.metoc.navy.mil/jtwc/jtwc.html" target="_blank" rel="noopener">JTWC ↗</a>
+          <a class="source-badge src-jma" href="https://www.jma.go.jp/bosai/map.html#contents=typhoon&lang=en" target="_blank" rel="noopener">JMA ↗</a>
         </div>
 
         <div class="severity-gauge">
@@ -1282,27 +1291,58 @@
     }, 2600);
   }
 
-  function sharePage(){
-    var summary = 'สถานะพายุหมุนเขตร้อนล่าสุด (2 ก.ย. 2569): ' +
-      'SAUDEL (โซเดล) พายุดีเปรสชันเขตร้อน ลม 55 กม./ชม. ใกล้ชายฝั่งกวางตุ้ง | ' +
-      'KROVANH (กรอวาญ) พายุโซนร้อน ลม 65 กม./ชม. มุ่งหน้าสู่ริวกิว';
-    var url = window.location.href;
-    var shareText = summary + '\n' + url;
-
-    if(navigator.share){
-      navigator.share({ title: 'สถานะพายุหมุนเขตร้อนล่าสุด', text: summary, url: url })
-        .catch(function(){ /* user cancelled, ignore */ });
-      return;
+  function legacyCopy(text){
+    try{
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-9999px';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch(err){
+      return false;
     }
+  }
 
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(shareText).then(function(){
-        showToast('คัดลอกลิงก์และสรุปพายุแล้ว ✓');
-      }).catch(function(){
-        showToast('ไม่สามารถคัดลอกได้ กรุณาคัดลอกลิงก์ด้วยตนเอง');
-      });
-    } else {
-      showToast('เบราว์เซอร์นี้ไม่รองรับการคัดลอกอัตโนมัติ');
+  function sharePage(){
+    try{
+      var summary = 'สถานะพายุหมุนเขตร้อนล่าสุด (2 ก.ย. 2569): ' +
+        'SAUDEL (โซเดล) พายุดีเปรสชันเขตร้อน ลม 55 กม./ชม. ใกล้ชายฝั่งกวางตุ้ง | ' +
+        'KROVANH (กรอวาญ) พายุโซนร้อน ลม 65 กม./ชม. มุ่งหน้าสู่ริวกิว';
+
+      // Web Share API requires a real http(s) URL — file:// pages can't use it.
+      var isWebProtocol = /^https?:$/.test(window.location.protocol);
+      var url = isWebProtocol ? window.location.href : '';
+      var shareText = url ? (summary + '\n' + url) : summary;
+
+      if(isWebProtocol && navigator.share){
+        navigator.share({ title: 'สถานะพายุหมุนเขตร้อนล่าสุด', text: summary, url: url })
+          .catch(function(){ /* user cancelled or blocked — ignore */ });
+        return;
+      }
+
+      if(navigator.clipboard && navigator.clipboard.writeText && isWebProtocol){
+        navigator.clipboard.writeText(shareText).then(function(){
+          showToast('คัดลอกลิงก์และสรุปพายุแล้ว ✓');
+        }).catch(function(){
+          var ok = legacyCopy(shareText);
+          showToast(ok ? 'คัดลอกสรุปพายุแล้ว ✓' : 'ไม่สามารถคัดลอกได้ กรุณาคัดลอกด้วยตนเอง');
+        });
+        return;
+      }
+
+      // file:// or older browser — use legacy copy method
+      var copied = legacyCopy(shareText);
+      showToast(copied ? 'คัดลอกสรุปพายุแล้ว ✓' : 'ไม่สามารถคัดลอกได้อัตโนมัติ กรุณาคัดลอกด้วยตนเอง');
+
+    } catch(err){
+      showToast('เกิดข้อผิดพลาดขณะแชร์ กรุณาลองใหม่อีกครั้ง');
     }
   }
 
