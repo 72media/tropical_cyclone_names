@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌀%3C/text%3E%3C/svg%3E">
+<title>รายชื่อพายุหมุนเขตร้อน มหาสมุทรแปซิฟิกเหนือด้านตะวันตกและทะเลจีนใต้</title>
+<style>
+  :root{
+    --navy:#0b3d63;
+    --navy-2:#12578c;
+    --ink:#1e2530;
+    --muted:#64748b;
+    --bg:#eef3f8;
+    --bg-grad-1:#eaf1f8;
+    --bg-grad-2:#f5f8fb;
+    --card:#ffffff;
+    --border:#e3e8ef;
+    --active-bg:#fff4ec;
+    --active-border:#ff8a3d;
+    --active-accent:#e0521a;
+    --shadow:0 4px 16px rgba(15,45,80,0.08);
+    --panel-grad-1:#fff8f3;
+    --panel-grad-2:#fff;
+    --clock-color:#0b3d63;
+    --toggle-bg:#ffffff;
+    --toggle-border:#dbe4ee;
+    --toggle-text:#0b3d63;
+    --row-alt:#f8fafc;
+    --row-hover:#eef4fb;
+    --header-text:#ffffff;
+    --group-text:#ffffff;
+    --active-badge-text:#ffffff;
+    --country-color:#475467;
+  }
+  body.dark{
+    --navy:#7fb8ec;
+    --navy-2:#5fa3e0;
+    --ink:#eef2f8;
+    --muted:#9fb0c4;
+    --bg:#0b1420;
+    --bg-grad-1:#0d1826;
+    --bg-grad-2:#0b1420;
+    --card:#131f2e;
+    --border:#223349;
+    --active-bg:#241a12;
+    --active-border:#ff9a52;
+    --active-accent:#ff7a29;
+    --shadow:0 4px 20px rgba(0,0,0,0.45);
+    --panel-grad-1:#20160f;
+    --panel-grad-2:#161010;
+    --clock-color:#ffe3c9;
+    --toggle-bg:#131f2e;
+    --toggle-border:#2b3c52;
+    --toggle-text:#eef2f8;
+    --row-alt:#182739;
+    --row-hover:#1d3148;
+    --header-text:#0b1420;
+    --group-text:#0b1420;
+    --active-badge-text:#2a1608;
+    --country-color:#c7d3e2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:"Noto Sans Thai","Sarabun","Segoe UI",sans-serif;
+    background:linear-gradient(180deg,var(--bg-grad-1) 0%, var(--bg-grad-2) 320px, var(--bg) 320px);
+    margin:0;
+    padding:32px 20px 60px;
+    color:var(--ink);
+    transition:background .25s ease, color .25s ease;
+  }
+
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+  }
+
+  header.hero{
+    text-align:center;
+    margin-bottom:28px;
+  }
+  header.hero .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(255,255,255,0.65);
+    border:1px solid rgba(11,61,99,0.15);
+    color:var(--navy);
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:.02em;
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-size:28px;
+    margin:0 0 6px;
+    color:var(--navy);
+    font-weight:800;
+    letter-spacing:-.01em;
+    line-height:1.35;
+  }
+  header.hero p.sub{
+    color:var(--muted);
+    margin:0;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:.01em;
+  }
+
+  /* ---------- Print ---------- */
+  @media print{
+    body{background:#fff !important; padding:0 !important;}
+    .theme-toggle-wrap, .group-tabs, .search-wrap, .active-card a.track-btn,
+    .prevnext-btn, .progress-dots, .share-btn, .no-print{
+      display:none !important;
+    }
+    .table-scroll{max-height:none !important; overflow:visible !important;}
+    tbody.group-panel[hidden]{display:table-row-group !important;}
+    thead th{position:static !important;}
+    .table-wrap, .active-panel{box-shadow:none !important; border:1px solid #ccc !important;}
+    .active-card{break-inside:avoid;}
+  }
+
+  /* ---------- Source badges ---------- */
+  .source-badges{
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
+    margin:2px 0 4px;
+  }
+  .source-badge{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.03em;
+    padding:2px 7px;
+    border-radius:5px;
+    color:#fff;
+  }
+  .src-jtwc{background:#2563eb;}
+  .src-hko{background:#0891b2;}
+  .src-jma{background:#7c3aed;}
+
+  /* ---------- Severity gauge ---------- */
+  .severity-gauge{
+    margin:6px 0 2px;
+  }
+  .severity-gauge .gauge-track{
+    display:flex;
+    gap:3px;
+    height:8px;
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .severity-gauge .seg{
+    flex:1;
+    background:var(--border);
+    position:relative;
+  }
+  .severity-gauge .seg.filled-td{background:#f4a340;}
+  .severity-gauge .seg.filled-ts{background:#f2822e;}
+  .severity-gauge .seg.filled-sts{background:#e8531f;}
+  .severity-gauge .seg.filled-ty{background:#c62828;}
+  .severity-gauge .seg.filled-sty{background:#8e1a1a;}
+  .severity-gauge .gauge-labels{
+    display:flex;
+    justify-content:space-between;
+    font-size:9px;
+    color:var(--muted);
+    font-weight:600;
+    margin-top:3px;
+    letter-spacing:.01em;
+  }
+  .severity-gauge .gauge-labels span.current{
+    color:var(--active-accent);
+    font-weight:800;
+  }
+
+  /* ---------- Sparkline ---------- */
+  .spark-wrap{
+    margin:4px 0 2px;
+  }
+  .spark-wrap .spark-title{
+    font-size:10.5px;
+    color:var(--muted);
+    font-weight:600;
+    margin-bottom:3px;
+  }
+  .spark-wrap svg{display:block; width:100%; height:auto;}
+
+  /* ---------- Search box ---------- */
+  .search-wrap{
+    padding:14px 16px 0;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    background:var(--card);
+  }
+  .search-input-box{
+    flex:1;
+    position:relative;
+  }
+  .search-input-box input{
+    width:100%;
+    padding:10px 14px 10px 36px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:var(--row-alt);
+    color:var(--ink);
+    font-family:inherit;
+    font-size:14px;
+    outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .search-input-box input:focus{
+    border-color:var(--active-accent);
+    box-shadow:0 0 0 3px rgba(224,82,26,0.12);
+  }
+  .search-input-box .search-icon{
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:14px;
+    color:var(--muted);
+    pointer-events:none;
+  }
+  .search-clear-btn{
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    color:var(--muted);
+    cursor:pointer;
+    font-size:16px;
+    padding:2px 6px;
+    display:none;
+  }
+  .search-result-note{
+    font-size:12px;
+    color:var(--muted);
+    padding:8px 16px 0;
+    display:none;
+  }
+
+  /* ---------- Prev/Next + progress dots ---------- */
+  .tabs-row{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:16px 16px 0;
+  }
+  .tabs-row .group-tabs{padding:0; flex:1;}
+  .prevnext-btn{
+    flex-shrink:0;
+    width:32px;height:32px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--row-alt);
+    color:var(--navy);
+    cursor:pointer;
+    font-size:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .prevnext-btn:hover{background:var(--row-hover); transform:scale(1.06);}
+  .progress-dots{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    padding:10px 0 14px;
+  }
+  .progress-dots .p-dot{
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--border);
+    transition:background .2s ease, width .2s ease;
+  }
+  .progress-dots .p-dot.is-active{
+    background:var(--active-accent);
+    width:18px;
+    border-radius:4px;
+  }
+
+  /* ---------- Toolbar buttons (print/share) ---------- */
+  .toolbar{
+    display:flex;
+    justify-content:flex-end;
+    gap:8px;
+    max-width:1180px;
+    margin:0 auto 14px;
+  }
+  .toolbar-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    background:var(--toggle-bg);
+    border:1px solid var(--toggle-border);
+    color:var(--toggle-text);
+    font-family:inherit;
+    font-size:13px;
+    font-weight:600;
+    padding:8px 16px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    transition:background .2s ease, color .2s ease, transform .15s ease;
+    position:relative;
+  }
+  .toolbar-btn:hover{transform:translateY(-1px);}
+  .toast{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--navy);
+    color:#fff;
+    font-size:13px;
+    font-weight:600;
+    padding:10px 20px;
+    border-radius:999px;
+    box-shadow:0 6px 24px rgba(0,0,0,0.25);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:50;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  /* ---------- Fade animation on tab/search switch ---------- */
+  @keyframes fadeSlideIn{
+    from{opacity:0; transform:translateY(4px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  tbody.group-panel.fade-in{
+    animation:fadeSlideIn .22s ease;
+  }
+
+  /* ---------- Active storms panel ---------- */
+  .active-panel{
+    background:linear-gradient(135deg,var(--panel-grad-1), var(--panel-grad-2));
+    border:1px solid var(--active-border);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:20px 22px;
+    margin:0 auto 32px;
+    max-width:1140px;
+  }
+  .active-panel-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+  }
+  .pulse-dot{
+    width:11px;height:11px;border-radius:50%;
+    background:var(--active-accent);
+    box-shadow:0 0 0 rgba(224,82,26,0.55);
+    animation:pulse 1.8s infinite;
+    flex-shrink:0;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(224,82,26,0.55);}
+    70%{box-shadow:0 0 0 10px rgba(224,82,26,0);}
+    100%{box-shadow:0 0 0 0 rgba(224,82,26,0);}
+  }
+  .active-panel-head h2{
+    font-size:16px;
+    margin:0;
+    color:var(--active-accent);
+    font-weight:700;
+  }
+  .active-panel-head span.count{
+    font-size:12.5px;
+    color:var(--muted);
+    font-weight:500;
+  }
+  .active-count-pill{
+    font-size:11px;
+    font-weight:800;
+    color:#fff;
+    background:var(--active-accent);
+    padding:2px 10px;
+    border-radius:999px;
+    letter-spacing:.02em;
+  }
+  .active-cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(340px,1fr));
+    gap:14px;
+  }
+  .active-card{
+    background:var(--card);
+    border:1px solid #ffd9b8;
+    border-left:5px solid var(--active-accent);
+    border-radius:12px;
+    padding:14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .active-card .name-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .active-card .name-row .storm-en{
+    font-size:17px;
+    font-weight:700;
+    color:var(--navy);
+    letter-spacing:.01em;
+  }
+  .active-card .name-row .storm-th{
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .active-card .status-line{
+    font-size:13px;
+    color:#3a3f47;
+    line-height:1.5;
+  }
+  .active-card .status-line b{color:var(--active-accent);}
+  .active-card .card-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:6px;
+  }
+  .active-card .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:8px;
+    margin:4px 0 2px;
+  }
+  .active-card .stat-item{
+    background:rgba(224,82,26,0.07);
+    border:1px solid rgba(224,82,26,0.16);
+    border-radius:9px;
+    padding:8px 10px;
+  }
+  body.dark .active-card .stat-item{
+    background:rgba(255,122,41,0.10);
+    border:1px solid rgba(255,122,41,0.22);
+  }
+  .active-card .stat-item .stat-label{
+    display:flex;
+    align-items:center;
+    gap:5px;
+    font-size:10.5px;
+    color:var(--muted);
+    font-weight:600;
+    letter-spacing:.02em;
+    margin-bottom:3px;
+  }
+  .active-card .stat-item .stat-value{
+    font-size:14.5px;
+    font-weight:700;
+    color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .active-card .stat-value small{
+    font-size:11px;
+    font-weight:600;
+    color:var(--muted);
+  }
+  .active-card .updated-line{
+    font-size:11px;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    gap:5px;
+    margin-top:2px;
+  }
+  .active-card .forecast-line{
+    font-size:12px;
+    color:#3a3f47;
+    background:rgba(11,61,99,0.05);
+    border-left:3px solid var(--navy-2);
+    padding:7px 10px;
+    border-radius:0 8px 8px 0;
+    line-height:1.55;
+  }
+  body.dark .active-card .forecast-line{
+    color:var(--ink);
+    background:rgba(127,184,236,0.08);
+  }
+  .active-card .cat-tag{
+    display:inline-block;
+    font-size:10.5px;
+    font-weight:700;
+    padding:2px 9px;
+    border-radius:6px;
+    color:#fff;
+    letter-spacing:.02em;
+    margin-left:8px;
+  }
+  .cat-td{background:#f4a340;}
+  .cat-ts{background:#f2822e;}
+  .cat-sts{background:#e8531f;}
+  .cat-typhoon{background:#c62828;}
+  .active-card .meaning{
+    font-size:12px;
+    color:var(--muted);
+  }
+  /* ---------- Group tabs ---------- */
+  .group-tabs{
+    display:flex;
+    gap:6px;
+    padding:16px 16px 0;
+    background:var(--card);
+    flex-wrap:wrap;
+  }
+  .group-tab-btn{
+    flex:1 1 0;
+    min-width:64px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:2px;
+    padding:10px 8px 12px;
+    background:transparent;
+    border:none;
+    border-bottom:3px solid transparent;
+    cursor:pointer;
+    font-family:inherit;
+    color:var(--muted);
+    transition:color .15s ease, background .15s ease;
+    border-radius:8px 8px 0 0;
+  }
+  .group-tab-btn .tab-roman{
+    font-size:16px;
+    font-weight:800;
+    letter-spacing:.03em;
+  }
+  .group-tab-btn .tab-sub{
+    font-size:10.5px;
+    font-weight:600;
+  }
+  .group-tab-btn:hover{
+    color:var(--navy);
+    background:var(--row-alt);
+  }
+  .group-tab-btn.is-active{
+    color:var(--navy);
+    border-bottom-color:var(--active-accent);
+    background:var(--row-alt);
+  }
+  .group-tab-btn.is-active .tab-roman{
+    color:var(--active-accent);
+  }
+  @media (max-width:640px){
+    .group-tabs{padding:12px 10px 0; gap:4px;}
+    .group-tab-btn{padding:8px 4px 10px;}
+    .group-tab-btn .tab-roman{font-size:14px;}
+    .group-tab-btn .tab-sub{font-size:9.5px;}
+  }
+
+  .group-tab-btn .tab-dot{
+    display:inline-block;
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--active-accent);
+    vertical-align:middle;
+    margin-left:2px;
+    animation:pulse-white 1.6s infinite;
+  }
+
+  .table-footnote{
+    padding:14px 16px;
+    font-size:12px;
+    color:var(--muted);
+    background:var(--row-alt);
+    border-top:1px solid var(--border);
+  }
+
+  .active-card a.track-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:12.5px;
+    font-weight:600;
+    text-decoration:none;
+    color:var(--active-badge-text);
+    background:var(--active-accent);
+    padding:6px 12px;
+    border-radius:999px;
+    white-space:nowrap;
+    transition:background .15s ease, transform .15s ease;
+  }
+  .active-card a.track-btn:hover{
+    background:#c8410f;
+    transform:translateY(-1px);
+  }
+  .active-panel-note{
+    margin-top:12px;
+    font-size:11.5px;
+    color:var(--muted);
+  }
+
+  /* ---------- Table ---------- */
+  .table-wrap{
+    max-width:1180px;
+    margin:0 auto;
+    background:var(--card);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .table-scroll{
+    overflow-x:auto;
+    overflow-y:auto;
+    max-height:70vh;
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    font-size:14px;
+    min-width:760px;
+  }
+  thead th{
+    background:linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    color:var(--header-text);
+    text-align:left;
+    padding:13px 14px;
+    position:sticky;
+    top:0;
+    font-weight:600;
+    font-size:13px;
+    letter-spacing:.02em;
+    z-index:2;
+  }
+  tbody td{
+    padding:10px 14px;
+    border-bottom:1px solid var(--border);
+    vertical-align:middle;
+  }
+  tbody tr:nth-child(even):not(.active-storm){
+    background:var(--row-alt);
+  }
+  tbody tr:hover:not(.active-storm){
+    background:var(--row-hover);
+  }
+  .col-country{
+    color:var(--country-color);
+  }
+  .storm-en{
+    font-weight:600;
+    color:var(--ink);
+  }
+  caption{
+    caption-side:bottom;
+    text-align:left;
+    padding:14px 16px;
+    font-size:12px;
+    color:var(--muted);
+    background:var(--row-alt);
+  }
+
+  /* Active row highlight */
+  tr.active-storm td{
+    background:var(--active-bg);
+  }
+  tr.active-storm{
+    box-shadow:inset 4px 0 0 var(--active-accent);
+  }
+  tr.active-storm .storm-en{
+    color:var(--active-accent);
+    font-weight:700;
+  }
+  .badge-active{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--active-badge-text);
+    background:var(--active-accent);
+    padding:2px 9px 2px 7px;
+    border-radius:999px;
+    margin-left:8px;
+    vertical-align:middle;
+    letter-spacing:.02em;
+  }
+  .badge-active .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--active-badge-text);
+    animation:pulse-white 1.6s infinite;
+  }
+  @keyframes pulse-white{
+    0%,100%{opacity:1;}
+    50%{opacity:.35;}
+  }
+  a.mini-link{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:12px;
+    font-weight:600;
+    color:var(--active-accent);
+    text-decoration:none;
+    margin-left:10px;
+    border-bottom:1px dashed var(--active-accent);
+  }
+  a.mini-link:hover{
+    color:#c8410f;
+    border-bottom-style:solid;
+  }
+
+  footer.note{
+    max-width:1180px;
+    margin:18px auto 0;
+    padding:0 4px;
+    font-size:12px;
+    color:var(--muted);
+    text-align:center;
+  }
+
+  @media (max-width:640px){
+    body{padding:20px 12px 40px;}
+    header.hero h1{font-size:21px;}
+    .active-panel{padding:16px;}
+  }
+
+  /* ---------- Clock ---------- */
+  .clock-box{
+    margin:6px auto 6px;
+  }
+  .clock-box .clock-time{
+    font-size:44px;
+    font-weight:800;
+    color:var(--clock-color);
+    letter-spacing:.01em;
+    line-height:1.15;
+    font-variant-numeric:tabular-nums;
+  }
+  .clock-box .clock-date{
+    font-size:16px;
+    font-weight:600;
+    color:var(--ink);
+    margin-top:2px;
+  }
+  .clock-box .clock-tz{
+    font-size:11.5px;
+    color:var(--muted);
+    margin-top:4px;
+    font-weight:500;
+    letter-spacing:.02em;
+  }
+  @media (max-width:640px){
+    .clock-box .clock-time{font-size:34px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="toolbar">
+    <button class="toolbar-btn no-print" type="button" onclick="printPage()">
+      <span>🖨️</span><span>พิมพ์ / PDF</span>
+    </button>
+    <button class="toolbar-btn share-btn no-print" type="button" onclick="sharePage()">
+      <span>🔗</span><span>แชร์</span>
+    </button>
+    <button class="toolbar-btn no-print" id="themeToggle" type="button" onclick="toggleTheme()">
+      <span class="icon" id="themeIcon">🌙</span>
+      <span id="themeLabel">โหมดมืด</span>
+    </button>
+  </div>
+
+  <header class="hero">
+    <div class="clock-box">
+      <div class="clock-time" id="clockTime">--:--:--</div>
+      <div class="clock-date" id="clockDate">กำลังโหลดวันที่...</div>
+      <div class="clock-tz">เวลาประเทศไทย (UTC+7)</div>
+    </div>
+    <h1>ความหมายและที่มาของชื่อพายุหมุนเขตร้อน</h1>
+    <p class="sub">ก่อตัวบริเวณมหาสมุทรแปซิฟิกเหนือด้านตะวันตกและทะเลจีนใต้</p>
+  </header>
+
+  <!-- Active storms summary panel -->
+  <section class="active-panel">
+    <div class="active-panel-head">
+      <span class="pulse-dot"></span>
+      <h2>พายุที่กำลัง Active อยู่ในขณะนี้</h2>
+      <span class="active-count-pill">2 ลูก</span>
+      <span class="count">อัปเดตล่าสุด 2 กันยายน 2569</span>
+    </div>
+
+    <div class="active-cards">
+      <div class="active-card">
+        <div class="name-row">
+          <span class="storm-en">SAUDEL <span style="font-weight:500;color:#94a3b8;">(โซเดล)</span><span class="cat-tag cat-td">พายุดีเปรสชันเขตร้อน</span></span>
+        </div>
+
+        <div class="source-badges">
+          <span class="source-badge src-jtwc">JTWC</span>
+          <span class="source-badge src-hko">HKO</span>
+          <span class="source-badge src-jma">JMA</span>
+        </div>
+
+        <div class="severity-gauge">
+          <div class="gauge-track">
+            <div class="seg filled-td"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+          </div>
+          <div class="gauge-labels">
+            <span class="current">TD</span>
+            <span>TS</span>
+            <span>STS</span>
+            <span>TY</span>
+            <span>STY</span>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-item">
+            <div class="stat-label">💨 ความเร็วลมสูงสุด</div>
+            <div class="stat-value">55 <small>กม./ชม. (~30 นอต)</small></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">📉 ความกดอากาศศูนย์กลาง</div>
+            <div class="stat-value">994 <small>hPa</small></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">📍 พิกัดโดยประมาณ</div>
+            <div class="stat-value">22.6°N, 116.7°E</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">🧭 ทิศทาง/ความเร็ว</div>
+            <div class="stat-value">ตะวันออกเฉียงเหนือ <small>15 กม./ชม.</small></div>
+          </div>
+        </div>
+
+        <div class="spark-wrap">
+          <div class="spark-title">📈 แนวโน้มความเร็วลม (เส้นทึบ = ข้อมูลจริง · เส้นประ = พยากรณ์)</div>
+          <svg viewBox="0 0 300 60" preserveAspectRatio="none">
+            <polyline points="10,40 38,33.33 66,26.67 94,26.67 122,33.33 150,33.33" fill="none" stroke="var(--active-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="150,33.33 178,33.33 206,33.33 234,33.33 262,40 290,46.67" fill="none" stroke="var(--active-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4,3" opacity="0.55"/>
+            <circle cx="150" cy="33.33" r="4" fill="var(--active-accent)" stroke="var(--card)" stroke-width="1.5"/>
+            <text x="10" y="57" font-size="8" fill="var(--muted)">31 ส.ค.</text>
+            <text x="150" y="57" font-size="8" fill="var(--active-accent)" font-weight="700" text-anchor="middle">ปัจจุบัน</text>
+            <text x="290" y="57" font-size="8" fill="var(--muted)" text-anchor="end">5 ก.ย.</text>
+          </svg>
+        </div>
+
+        <div class="status-line">ตำแหน่งล่าสุด: ห่างจากฮ่องกงไปทางตะวันออกประมาณ <b>257 กม.</b> (นอกชายฝั่งมณฑลกวางตุ้ง) คลื่นสูงสุดที่เกี่ยวข้อง 4.6 เมตร</div>
+        <div class="forecast-line">🔮 คาดการณ์: จะเคลื่อนตัวไปทางตะวันออกเฉียงเหนืออีกราว 12 ชม. ก่อนเลี้ยวกลับไปทางตะวันตกเฉียงใต้เข้าสู่ชายฝั่งจีนตอนใต้ในอีกราว 36 ชม. โดยคาดว่าจะทวีกำลังขึ้นเป็นพายุโซนร้อนอีกครั้งก่อนขึ้นฝั่ง แล้วอ่อนกำลังลงเป็นดีเปรสชันหลังขึ้นฝั่ง</div>
+
+        <div class="updated-line">🕐 อัปเดตล่าสุด: 2 กันยายน 2569 เวลา 10:00 น. (เวลาไทย)</div>
+
+        <div class="card-footer">
+          <span class="meaning">ชื่อโดยไมโครนีเซีย · แปลว่า "นายทหารองครักษ์ของหัวหน้าเผ่าบนเกาะโปนเป"</span>
+          <a class="track-btn" href="https://zoom.earth/storms/saudel-2026/" target="_blank" rel="noopener">ดูข้อมูล ↗</a>
+        </div>
+      </div>
+
+      <div class="active-card">
+        <div class="name-row">
+          <span class="storm-en">KROVANH <span style="font-weight:500;color:#94a3b8;">(กรอวาญ)</span><span class="cat-tag cat-ts">พายุโซนร้อน</span></span>
+        </div>
+
+        <div class="source-badges">
+          <span class="source-badge src-jtwc">JTWC</span>
+          <span class="source-badge src-jma">JMA</span>
+        </div>
+
+        <div class="severity-gauge">
+          <div class="gauge-track">
+            <div class="seg filled-td"></div>
+            <div class="seg filled-ts"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+            <div class="seg"></div>
+          </div>
+          <div class="gauge-labels">
+            <span>TD</span>
+            <span class="current">TS</span>
+            <span>STS</span>
+            <span>TY</span>
+            <span>STY</span>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-item">
+            <div class="stat-label">💨 ความเร็วลมสูงสุด</div>
+            <div class="stat-value">65 <small>กม./ชม. (~35 นอต)</small></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">📉 ความกดอากาศศูนย์กลาง</div>
+            <div class="stat-value">994 <small>hPa</small></div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">📍 พิกัดโดยประมาณ</div>
+            <div class="stat-value">22.5°N, 132.0°E</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">🧭 ทิศทาง/ความเร็ว</div>
+            <div class="stat-value">ตะวันตกเฉียงเหนือ <small>11 กม./ชม.</small></div>
+          </div>
+        </div>
+
+        <div class="spark-wrap">
+          <div class="spark-title">📈 แนวโน้มความเร็วลม (เส้นทึบ = ข้อมูลจริง · เส้นประ = พยากรณ์)</div>
+          <svg viewBox="0 0 300 60" preserveAspectRatio="none">
+            <polyline points="10,40 38,33.33 66,26.67 94,26.67 122,26.67 150,26.67" fill="none" stroke="var(--active-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="150,26.67 178,26.67 206,20 234,13.33 262,20 290,26.67" fill="none" stroke="var(--active-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4,3" opacity="0.55"/>
+            <circle cx="150" cy="26.67" r="4" fill="var(--active-accent)" stroke="var(--card)" stroke-width="1.5"/>
+            <text x="10" y="57" font-size="8" fill="var(--muted)">30 ส.ค.</text>
+            <text x="150" y="57" font-size="8" fill="var(--active-accent)" font-weight="700" text-anchor="middle">ปัจจุบัน</text>
+            <text x="290" y="57" font-size="8" fill="var(--muted)" text-anchor="end">7 ก.ย.</text>
+          </svg>
+        </div>
+
+        <div class="status-line">ตำแหน่งล่าสุด: ห่างจากฐานทัพคาเดนะ โอกินาวาไปทางตะวันออกเฉียงใต้ประมาณ <b>598 กม.</b> ในทะเลฟิลิปปิน คลื่นสูงสุดที่เกี่ยวข้อง 5.5 เมตร</div>
+        <div class="forecast-line">🔮 คาดการณ์: จะเคลื่อนตัวมุ่งหน้าสู่หมู่เกาะริวกิว และอาจทวีกำลังขึ้นเป็นพายุโซนร้อนกำลังแรง (ลมสูงสุดถึง ~85 กม./ชม.) ในช่วงวันที่ 4-5 กันยายน ก่อนเคลื่อนผ่านใกล้พื้นที่ทางใต้ของเกาะคิวชู ประเทศญี่ปุ่น</div>
+
+        <div class="updated-line">🕐 อัปเดตล่าสุด: 2 กันยายน 2569 เวลา 13:00 น. (เวลาไทย)</div>
+
+        <div class="card-footer">
+          <span class="meaning">ชื่อโดยกัมพูชา · แปลว่า "ต้นกระวาน"</span>
+          <a class="track-btn" href="https://zoom.earth/storms/krovanh-2026/" target="_blank" rel="noopener">ดูข้อมูล ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="active-panel-note">ข้อมูลความเร็วลม ความกดอากาศ และพิกัด อ้างอิงจากการรวบรวมของ Zoom Earth (ใช้ข้อมูลจาก JTWC/HKO/JMA) พิกัดที่แสดงเป็นค่าประมาณจากตำแหน่งอ้างอิง ณ เวลาที่ระบุ สถานะพายุเปลี่ยนแปลงได้ตลอดเวลา โปรดตรวจสอบแหล่งข้อมูลทางการก่อนตัดสินใจใด ๆ</p>
+  </section>
+
+  <div class="table-wrap">
+    <div class="search-wrap">
+      <div class="search-input-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="stormSearch" placeholder="ค้นหาชื่อพายุ ความหมาย หรือประเทศ..." oninput="handleSearch(this.value)">
+        <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()">✕</button>
+      </div>
+    </div>
+    <p class="search-result-note" id="searchResultNote"></p>
+
+    <div class="tabs-row">
+      <button class="prevnext-btn no-print" onclick="stepGroup(-1)" title="ชุดก่อนหน้า">‹</button>
+      <div class="group-tabs" id="groupTabs">
+        <button class="group-tab-btn is-active" data-group="1" onclick="showGroup(1)">
+          <span class="tab-roman">I</span><span class="tab-sub">ชุดที่ 1</span>
+        </button>
+        <button class="group-tab-btn" data-group="2" onclick="showGroup(2)">
+          <span class="tab-roman">II</span><span class="tab-sub">ชุดที่ 2</span>
+        </button>
+        <button class="group-tab-btn" data-group="3" onclick="showGroup(3)">
+          <span class="tab-roman">III <span class="tab-dot" title="มีพายุ Active"></span></span><span class="tab-sub">ชุดที่ 3</span>
+        </button>
+        <button class="group-tab-btn" data-group="4" onclick="showGroup(4)">
+          <span class="tab-roman">IV <span class="tab-dot" title="มีพายุ Active"></span></span><span class="tab-sub">ชุดที่ 4</span>
+        </button>
+        <button class="group-tab-btn" data-group="5" onclick="showGroup(5)">
+          <span class="tab-roman">V</span><span class="tab-sub">ชุดที่ 5</span>
+        </button>
+      </div>
+      <button class="prevnext-btn no-print" onclick="stepGroup(1)" title="ชุดถัดไป">›</button>
+    </div>
+    <div class="progress-dots" id="progressDots">
+      <span class="p-dot is-active" data-dot="1"></span>
+      <span class="p-dot" data-dot="2"></span>
+      <span class="p-dot" data-dot="3"></span>
+      <span class="p-dot" data-dot="4"></span>
+      <span class="p-dot" data-dot="5"></span>
+    </div>
+
+    <div class="table-scroll">
+    <table>
+    <thead>
+    <tr>
+      <th>ชื่อพายุ (อังกฤษ)</th>
+      <th>คำอ่าน (ไทย)</th>
+      <th>ความหมาย</th>
+      <th>ประเทศที่มาของชื่อ</th>
+    </tr>
+    </thead>
+    <tbody class="group-panel" data-group="1">
+
+    <!-- Column I -->
+    <tr><td class="storm-en">DAMREY</td><td>ด็อมเร็ย</td><td>ช้าง</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">HAIKUI</td><td>ไห่ขุย</td><td>ชื่อดอกไม้ทะเลชนิดหนึ่ง</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">KIROGI</td><td>คีโรกี</td><td>ห่านป่า</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">YUN-YEUNG</td><td>ยุนยาง</td><td>เป็ดแมนดาริน</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">KOINU</td><td>โคอินุ</td><td>ลูกสุนัข</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">BOLAVEN</td><td>บอละเวน</td><td>ที่ราบสูงทางตอนใต้ของลาว</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">SANBA</td><td>ซันปา</td><td>ชื่อสถานที่ในมาเก๊า</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">JELAWAT</td><td>เจอลาวัต</td><td>ชื่อปลาน้ำจืดชนิดหนึ่ง</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">TIROU</td><td>ติรู</td><td>คำกล่าวขอร้องอย่างสุภาพในวัฒนธรรมชูกีซ</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย</td></tr>
+    <tr><td class="storm-en">MALIKSI</td><td>มาลิกซี</td><td>เร็ว</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">GAEMI</td><td>แคมี</td><td>มด</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">PRAPIROON</td><td>พระพิรุณ</td><td>ชื่อเทพเจ้าแห่งฝน</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">MARIA</td><td>มาเรีย</td><td>ชื่อผู้หญิง (ภาษาชามอร์โร)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">SON-TINH</td><td>เซินติญ</td><td>ชื่อเทพเจ้าแห่งขุนเขาในปรัมปราเวียดนาม</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+    <tr><td class="storm-en">AMPIL</td><td>อ็อมปึล</td><td>มะขาม</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">WUKONG</td><td>อู๋คง</td><td>พญาวานรในพุทธศาสนาจีน</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">JONGDARI</td><td>ชงดารี</td><td>นกจาบฝน</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">SHANSHAN</td><td>ชานชาน</td><td>ชื่อของเด็กหญิง</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">TOMO</td><td>โทโมะ</td><td>กลุ่มดาวท้ายเรือ</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">LEEPI</td><td>หลี่ผี</td><td>น้ำตกที่สวยที่สุดทางตอนใต้ของลาว</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">BEBINCA</td><td>เบบินคา</td><td>ชื่อขนมพุดดิงของมาเก๊า</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">PULASAN</td><td>ปูลาซัน</td><td>ผลไม้ชนิดหนึ่งคล้ายเงาะ</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">SOULIK</td><td>ซูลิก</td><td>ตำแหน่งหัวหน้าเผ่าโบราณของเกาะโปนเป</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย</td></tr>
+    <tr><td class="storm-en">CIMARON</td><td>ซีมารอน</td><td>วัวป่าของฟิลิปปินส์</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">NARAE</td><td>นาแร</td><td>ปีกนกหรือปีกแมลง</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">BURAPHA</td><td>บูรพา</td><td>ตะวันออก</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">BARIJAT</td><td>บารีจัต</td><td>ชายฝั่งที่มีคลื่นลม (ภาษาหมู่เกาะมาร์แชล)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">HOABAN</td><td>ฮวาบาน</td><td>ดอกกาหลง</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+
+    </tbody>
+    <tbody class="group-panel" data-group="2" hidden>
+
+    <!-- Column II -->
+    <tr><td class="storm-en">KOKI</td><td>กอกีร์</td><td>ต้นไม้เนื้อแข็งขนาดใหญ่ ใช้ในวิถีชีวิตชาวกัมพูชา</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">YINXING</td><td>หยินซิ่ง</td><td>ต้นไม้ท้องถิ่นในประเทศจีน</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">GAEGURI</td><td>แคกูรี</td><td>กบชนิดหนึ่ง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">DIM-SUM</td><td>ติ๋มซั้ม</td><td>อาหารชนิดหนึ่งที่มีชื่อเสียงในฮ่องกง</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">HEBI</td><td>เฮบิ</td><td>งูใหญ่</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">PABUK</td><td>ปาบึก</td><td>ปลาน้ำจืดขนาดใหญ่ (ปลาบึก) ในแม่น้ำโขง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">WUTIP</td><td>หวู่ติบ</td><td>ผีเสื้อ</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">SEPAT</td><td>เซอปัต</td><td>ปลาชนิดหนึ่ง (ปลาตีน)</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">MUN</td><td>มูน</td><td>เดือนมิถุนายน (ภาษาหมู่เกาะแยป)</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย</td></tr>
+    <tr><td class="storm-en">DANAS</td><td>ดานัส</td><td>ประสบการณ์และความรู้สึก</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">NARI</td><td>นารี</td><td>ดอกลิลี</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">WIPHA</td><td>วิภา</td><td>ชื่อของผู้หญิง</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">FRANCISCO</td><td>ฟรานซิสโก</td><td>ชื่อของผู้ชาย (ภาษาชามอร์โร)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">CO-MAY</td><td>ก๋อมัย</td><td>หญ้าเจ้าชู้</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+    <tr><td class="storm-en">KROSA</td><td>กรอซา</td><td>นกกระสา, นกกระเรียน</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">BAILU</td><td>ไป๋ลู่</td><td>กวางขาว</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">PODUL</td><td>โพดุล</td><td>ต้นหลิว</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">LINGLING</td><td>เหล่งเหล่ง</td><td>ชื่อของเด็กหญิง</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">KAJIKI</td><td>คาจิกิ</td><td>ชื่อปลาทะเลที่มีสีสวยงาม</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">NONGFA</td><td>หนองฟ้า</td><td>ชื่อทะเลสาบ</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">PEIPAH</td><td>เผ่ย์ผ่า</td><td>ปลาที่เลี้ยงไว้ดูเล่นชนิดหนึ่งในมาเก๊า</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">TAPAH</td><td>ตาปะฮ์</td><td>ชื่อปลาน้ำจืดชนิดหนึ่ง</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">MITAG</td><td>มิแทก</td><td>ชื่อของผู้หญิง (ภาษาเกาะแยป)</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย</td></tr>
+    <tr><td class="storm-en">RAGASA</td><td>รากาซา</td><td>กระโชก</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">NEOGURI</td><td>นอกูรี</td><td>สุนัขพันธุ์หนึ่งในเกาหลีคล้ายแร็กคูน</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">BUALOI</td><td>บัวลอย</td><td>ขนมชนิดหนึ่ง</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">MATMO</td><td>แมตโม</td><td>ฝนที่ตกหนัก</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">HALONG</td><td>หะลอง</td><td>ชื่ออ่าวที่สวยงามของเวียดนาม</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+
+    </tbody>
+    <tbody class="group-panel" data-group="3" hidden>
+
+    <!-- Column III -->
+    <tr><td class="storm-en">NAKRI</td><td>นากรี</td><td>ชื่อดอกไม้ชนิดหนึ่ง</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">FENGSHEN</td><td>เฟิงเฉิน</td><td>ชื่อเทพเจ้าแห่งลม</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">KALMAEGI</td><td>คัลแมกี</td><td>นกนางนวล</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">FUNG-WONG</td><td>ฟงวอง</td><td>ฟีนิกซ์ (ชื่อยอดเขา)</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">KOTO</td><td>โคโตะ</td><td>พิณโคโตะ</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">NOKAEN</td><td>นกแอ่น</td><td>ชื่อนกชนิดหนึ่ง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">PENHA</td><td>เปญา</td><td>ชื่อโบสถ์</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">NURI</td><td>นูรี</td><td>นกแก้วหัวสีน้ำเงินในภาษามลายู</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">SINLAKU</td><td>ซินลากู</td><td>ชื่อเทพธิดาในนิยายของเกาะคอสไร</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย</td></tr>
+    <tr><td class="storm-en">HAGUPIT</td><td>ฮากูปิต</td><td>เฆี่ยนตี</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">JANGMI</td><td>ชังมี</td><td>กุหลาบ</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">MEKKHALA</td><td>เมขลา</td><td>ชื่อเทพธิดาประจำสมุทรในเทพนิยายไทย</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">HIGOS</td><td>ฮีโกส</td><td>ผลมะเดื่อ (ภาษาชามอร์โร)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">BAVI</td><td>บาหวี่</td><td>ทิวเขาในภาคเหนือของเวียดนาม</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+    <tr><td class="storm-en">MAYSAK</td><td>ไมสัก</td><td>ชื่อต้นไม้ชนิดหนึ่ง</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">HAISHEN</td><td>ไห่เฉิน</td><td>ชื่อเทพเจ้าแห่งท้องทะเล</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">NOUL</td><td>โนอึล</td><td>เรืองแสง, ท้องฟ้าสีแดง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">DOLPHIN</td><td>ดอลฟิน</td><td>โลมาสีขาว ตัวนำโชคของฮ่องกง</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">KUJIRA</td><td>คูจิระ</td><td>กลุ่มดาวซีตัส, วาฬ</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">CHAN-HOM</td><td>จันหอม</td><td>ชื่อต้นไม้ชนิดหนึ่ง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">PEILOU</td><td>เผ่ย์โหล่ว</td><td>นกปากช้อน</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">NANGKA</td><td>นังกา</td><td>ขนุน</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr class="active-storm"><td class="storm-en">SAUDEL<span class="badge-active"><span class="dot"></span>ACTIVE</span></td><td>โซเดล</td><td>ชื่อนายทหารองครักษ์ของหัวหน้าเผ่าบนเกาะโปนเป</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย<a class="mini-link" href="https://zoom.earth/storms/saudel-2026/" target="_blank" rel="noopener">ดูข้อมูล ↗</a></td></tr>
+    <tr><td class="storm-en">NARRA</td><td>นาร์รา</td><td>ต้นประดู่</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">GAENARI</td><td>แคนารี</td><td>ไม้พุ่มชนิดหนึ่ง ดอกสีเหลือง (ฟอร์ซิเทีย)</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">ATSANI</td><td>อัสนี</td><td>สายฟ้า</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">ETAU</td><td>เอตาว</td><td>เมฆฝน (ภาษาเกาะปาเลา)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">BANG-LANG</td><td>บั่งลัง</td><td>ต้นอินทนิลน้ำ</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+
+    </tbody>
+    <tbody class="group-panel" data-group="4" hidden>
+
+    <!-- Column IV -->
+    <tr class="active-storm"><td class="storm-en">KROVANH<span class="badge-active"><span class="dot"></span>ACTIVE</span></td><td>กรอวาญ</td><td>ชื่อต้นไม้ชนิดหนึ่ง (กระวาน)</td><td class="col-country">ราชอาณาจักรกัมพูชา<a class="mini-link" href="https://zoom.earth/storms/krovanh-2026/" target="_blank" rel="noopener">ดูข้อมูล ↗</a></td></tr>
+    <tr><td class="storm-en">DUJUAN</td><td>ตู้เจวียน</td><td>กุหลาบพันปี</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">SURIGAE</td><td>ซูรีแค</td><td>ชื่อนกอินทรีชนิดหนึ่ง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">CHOI-WAN</td><td>ฉอยหวั่น</td><td>เมฆซึ่งมีสีสันสวยงาม</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">KOGUMA</td><td>โคะงุมะ</td><td>ดาวหมีน้อย</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">CHAMPI</td><td>จำปี</td><td>ชื่อดอกไม้ชนิดหนึ่ง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">IN-FA</td><td>ยีนฟ้า</td><td>ดอกไม้ไฟ</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">CEMPAKA</td><td>เจิมปากา</td><td>ดอกจำปา</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">NEPARTAK</td><td>เนพาร์ตัก</td><td>นักรบที่มีชื่อเสียงของชาวเกาะคอสไร</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย</td></tr>
+    <tr><td class="storm-en">LUPIT</td><td>ลูปิต</td><td>โหดร้ายทารุณ</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">MIRINAE</td><td>มีรีแน</td><td>ทางช้างเผือก</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">NIDA</td><td>นิดา</td><td>ชื่อของผู้หญิง</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">OMAIS</td><td>โอไมส์</td><td>พเนจร (ภาษาเกาะปาเลา)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">LUC-BINH</td><td>หลุกบิ่ญ</td><td>ผักตบชวา</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+    <tr><td class="storm-en">CHANTHU</td><td>จันทู</td><td>ชื่อดอกไม้ชนิดหนึ่ง</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">DIANMU</td><td>เตี้ยนหมู่</td><td>เจ้าแม่แห่งสายฟ้า</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">MINDULLE</td><td>มินดุลเล</td><td>ชื่อดอกไม้ชนิดหนึ่ง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">LIONROCK</td><td>ไลออนร็อก</td><td>ชื่อยอดเขาในฮ่องกง</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">TOKEI</td><td>โทเก</td><td>กลุ่มดาวนาฬิกา</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">NAMTHEUN</td><td>น้ำเทิน</td><td>ชื่อแม่น้ำซึ่งเป็นแควของแม่น้ำโขง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">MALOU</td><td>หมาเหล่า</td><td>อะเกต, หินโมรา</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">NYATOH</td><td>ญาโตะฮ์</td><td>ชื่อไม้เนื้อแข็งชนิดหนึ่ง</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">SARBUL</td><td>ซาร์บุล</td><td>มรสุม หรือฤดูฝน</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">AMUYAO</td><td>อามูเยา</td><td>ชื่อภูเขาในจังหวัดเมาน์เทน</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">GOSARI</td><td>โคซารี</td><td>เฟินชนิดหนึ่ง</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">CHABA</td><td>ชบา</td><td>ชื่อดอกไม้ชนิดหนึ่ง</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">AERE</td><td>แอรี</td><td>พายุ (ภาษาหมู่เกาะมาร์แชล)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">SONGDA</td><td>ซงด่า</td><td>ชื่อแม่น้ำทางตะวันตกเฉียงเหนือของเวียดนาม</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+
+    </tbody>
+    <tbody class="group-panel" data-group="5" hidden>
+
+    <!-- Column V -->
+    <tr><td class="storm-en">TRASES</td><td>ตรอแซะฮ์</td><td>นกหัวขวาน</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">MULAN</td><td>มู่หลาน</td><td>ชื่อดอกไม้ชนิดหนึ่งในตระกูลแม็กโนเลีย</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">MEARI</td><td>เมอารี</td><td>เสียงสะท้อน</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">TSING-MA</td><td>ชิงหม่า</td><td>สะพานเชื่อมสนามบินฮ่องกงกับตัวเมือง</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">TOKAGE</td><td>โทกาเงะ</td><td>กลุ่มดาวลาเซอร์ตา, กิ้งก่า</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">ONG-MANG</td><td>โอง-มั่ง</td><td>ละองละมั่ง (กวางชนิดหนึ่ง)</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">MUIFA</td><td>หมุ่ยฟ้า</td><td>ดอกบ๊วย</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">MERBOK</td><td>เมอร์บก</td><td>ชื่อนกชนิดหนึ่ง (นกเขา)</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">NANMADOL</td><td>นันมาดอล</td><td>โบราณสถานของเกาะโปนเป "เวนิสแห่งแปซิฟิก"</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย</td></tr>
+    <tr><td class="storm-en">TALAS</td><td>ตาลัส</td><td>ความคม, ความเฉียบแหลม</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">HODU</td><td>โฮดู</td><td>วอลนัต</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">KULAP</td><td>กุหลาบ</td><td>ชื่อดอกไม้ชนิดหนึ่ง</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">ROKE</td><td>โรคี</td><td>ชื่อของผู้ชาย (ภาษาชามอร์โร)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">SONCA</td><td>เซินกา</td><td>ชื่อนกชนิดหนึ่งมีเสียงไพเราะ</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+    <tr><td class="storm-en">NESAT</td><td>เนสาท</td><td>การประมง</td><td class="col-country">ราชอาณาจักรกัมพูชา</td></tr>
+    <tr><td class="storm-en">HAITANG</td><td>ไห่ถาง</td><td>ผลไม้คล้ายแอปเปิ้ลขนาดเล็กของจีน</td><td class="col-country">สาธารณรัฐประชาชนจีน</td></tr>
+    <tr><td class="storm-en">JAMJARI</td><td>ชัมจารี</td><td>แมลงปอ</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนเกาหลี</td></tr>
+    <tr><td class="storm-en">BANYAN</td><td>บันยัน</td><td>ชื่อต้นไม้ชนิดหนึ่ง (ไทร)</td><td class="col-country">เขตบริหารพิเศษฮ่องกง</td></tr>
+    <tr><td class="storm-en">YAMANEKO</td><td>ยามาเนโกะ</td><td>แมวป่า</td><td class="col-country">ญี่ปุ่น</td></tr>
+    <tr><td class="storm-en">PAKHAR</td><td>ปาข่า</td><td>ปลาน้ำจืดชนิดหนึ่งในแม่น้ำโขงตอนล่าง</td><td class="col-country">สาธารณรัฐประชาธิปไตยประชาชนลาว</td></tr>
+    <tr><td class="storm-en">SANVU</td><td>ซ้านหวู่</td><td>ปะการัง</td><td class="col-country">เขตบริหารพิเศษมาเก๊า</td></tr>
+    <tr><td class="storm-en">MAWAR</td><td>มาวาร์</td><td>กุหลาบ</td><td class="col-country">มาเลเซีย</td></tr>
+    <tr><td class="storm-en">GUCHOL</td><td>กูโชล</td><td>ขมิ้นชัน (ภาษาเกาะแยป)</td><td class="col-country">สาธารณรัฐสหพันธ์ไมโครนีเซีย</td></tr>
+    <tr><td class="storm-en">TALIM</td><td>ตาลิม</td><td>คม, คมมีด</td><td class="col-country">สาธารณรัฐฟิลิปปินส์</td></tr>
+    <tr><td class="storm-en">DOKSURI</td><td>ทกซูรี</td><td>นกอินทรี</td><td class="col-country">สาธารณรัฐเกาหลี (เกาหลีใต้)</td></tr>
+    <tr><td class="storm-en">KHANUN</td><td>ขนุน</td><td>ชื่อผลไม้ชนิดหนึ่งของไทย</td><td class="col-country">ราชอาณาจักรไทย</td></tr>
+    <tr><td class="storm-en">LAN</td><td>แลง</td><td>พายุ (ภาษาหมู่เกาะมาร์แชล)</td><td class="col-country">สหรัฐอเมริกา</td></tr>
+    <tr><td class="storm-en">SAOLA</td><td>เซาลา</td><td>สัตว์ตระกูลวัวที่พบในเวียดนาม</td><td class="col-country">สาธารณรัฐสังคมนิยมเวียดนาม</td></tr>
+
+    </tbody>
+    </table>
+    </div>
+    <div class="table-footnote">
+    รายชื่อพายุหมุนเขตร้อนได้รับการอนุมัติจากที่ประชุมคณะกรรมการไต้ฝุ่น สมัยที่ ๕๘ (๑๐–๑๓ มีนาคม ๒๕๖๙) การตั้งชื่อจะหมุนเวียนตามลำดับ และถอดเสียงคำอ่านโดยสำนักงานราชบัณฑิตยสภา
+    </div>
+  </div>
+
+  <footer class="note">
+    สถานะพายุที่ Active อ้างอิงจากหอสังเกตการณ์ฮ่องกง (HKO) และสำนักอุตุนิยมวิทยาญี่ปุ่น (JMA) ณ วันที่ 1–2 กันยายน 2569 · โปรดติดตามประกาศทางการอย่างใกล้ชิดหากอยู่ในพื้นที่ที่อาจได้รับผลกระทบ
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+</div>
+
+<script>
+  var TOTAL_GROUPS = 5;
+  var currentGroup = 1;
+
+  // ---------- Group tab switching (with fade animation + progress dots) ----------
+  function showGroup(n){
+    n = Number(n);
+    currentGroup = n;
+    var panels = document.querySelectorAll('.group-panel');
+    panels.forEach(function(p){
+      var match = String(n) === p.getAttribute('data-group');
+      p.hidden = !match;
+      if(match){
+        p.classList.remove('fade-in');
+        // force reflow so the animation replays every time
+        void p.offsetWidth;
+        p.classList.add('fade-in');
+      }
+    });
+    var btns = document.querySelectorAll('.group-tab-btn');
+    btns.forEach(function(b){
+      b.classList.toggle('is-active', b.getAttribute('data-group') === String(n));
+    });
+    var dots = document.querySelectorAll('.p-dot');
+    dots.forEach(function(d){
+      d.classList.toggle('is-active', d.getAttribute('data-dot') === String(n));
+    });
+    var scrollBox = document.querySelector('.table-scroll');
+    if(scrollBox){ scrollBox.scrollTop = 0; }
+  }
+
+  function stepGroup(delta){
+    var next = currentGroup + delta;
+    if(next < 1) next = TOTAL_GROUPS;
+    if(next > TOTAL_GROUPS) next = 1;
+    showGroup(next);
+  }
+
+  // Keyboard left/right to switch groups (ignored while typing in search box)
+  document.addEventListener('keydown', function(e){
+    var active = document.activeElement;
+    if(active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+    if(document.getElementById('stormSearch').value.trim() !== '') return;
+    if(e.key === 'ArrowLeft'){ stepGroup(-1); }
+    if(e.key === 'ArrowRight'){ stepGroup(1); }
+  });
+
+  // ---------- Live search across all groups ----------
+  function handleSearch(query){
+    var q = query.trim().toLowerCase();
+    var clearBtn = document.getElementById('searchClearBtn');
+    var note = document.getElementById('searchResultNote');
+    var tabsRow = document.querySelector('.tabs-row');
+    var dotsRow = document.getElementById('progressDots');
+    clearBtn.style.display = q ? 'block' : 'none';
+
+    var allPanels = document.querySelectorAll('.group-panel');
+    var allRows = document.querySelectorAll('.group-panel tr');
+
+    if(!q){
+      note.style.display = 'none';
+      tabsRow.style.display = '';
+      dotsRow.style.display = '';
+      allRows.forEach(function(tr){ tr.style.display = ''; });
+      showGroup(currentGroup);
+      return;
+    }
+
+    // Search mode: reveal every group, hide tabs/dots, filter rows by text match
+    tabsRow.style.display = 'none';
+    dotsRow.style.display = 'none';
+    allPanels.forEach(function(p){ p.hidden = false; });
+
+    var matchCount = 0;
+    allRows.forEach(function(tr){
+      var text = tr.textContent.toLowerCase();
+      var match = text.indexOf(q) !== -1;
+      tr.style.display = match ? '' : 'none';
+      if(match) matchCount++;
+    });
+
+    note.style.display = 'block';
+    note.textContent = matchCount > 0
+      ? 'พบ ' + matchCount + ' รายการที่ตรงกับ "' + query + '"'
+      : 'ไม่พบรายชื่อพายุที่ตรงกับ "' + query + '"';
+  }
+
+  function clearSearch(){
+    var input = document.getElementById('stormSearch');
+    input.value = '';
+    handleSearch('');
+    input.focus();
+  }
+
+  // ---------- Print / Save as PDF ----------
+  function printPage(){
+    window.print();
+  }
+
+  // ---------- Share (copy link + short summary) ----------
+  function showToast(msg){
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(function(){
+      toast.classList.remove('show');
+    }, 2600);
+  }
+
+  function sharePage(){
+    var summary = 'สถานะพายุหมุนเขตร้อนล่าสุด (2 ก.ย. 2569): ' +
+      'SAUDEL (โซเดล) พายุดีเปรสชันเขตร้อน ลม 55 กม./ชม. ใกล้ชายฝั่งกวางตุ้ง | ' +
+      'KROVANH (กรอวาญ) พายุโซนร้อน ลม 65 กม./ชม. มุ่งหน้าสู่ริวกิว';
+    var url = window.location.href;
+    var shareText = summary + '\n' + url;
+
+    if(navigator.share){
+      navigator.share({ title: 'สถานะพายุหมุนเขตร้อนล่าสุด', text: summary, url: url })
+        .catch(function(){ /* user cancelled, ignore */ });
+      return;
+    }
+
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(shareText).then(function(){
+        showToast('คัดลอกลิงก์และสรุปพายุแล้ว ✓');
+      }).catch(function(){
+        showToast('ไม่สามารถคัดลอกได้ กรุณาคัดลอกลิงก์ด้วยตนเอง');
+      });
+    } else {
+      showToast('เบราว์เซอร์นี้ไม่รองรับการคัดลอกอัตโนมัติ');
+    }
+  }
+
+  // ---------- Live Thai date/time clock ----------
+  function updateClock(){
+    var now = new Date();
+    var timeFmt = new Intl.DateTimeFormat('th-TH', {
+      timeZone:'Asia/Bangkok',
+      hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+    });
+    var dateFmt = new Intl.DateTimeFormat('th-TH-u-ca-buddhist', {
+      timeZone:'Asia/Bangkok',
+      weekday:'long', day:'numeric', month:'long', year:'numeric'
+    });
+    document.getElementById('clockTime').textContent = timeFmt.format(now);
+    document.getElementById('clockDate').textContent = dateFmt.format(now);
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ---------- Dark / light theme toggle ----------
+  function toggleTheme(){
+    var body = document.body;
+    var isDark = body.classList.toggle('dark');
+    document.getElementById('themeIcon').textContent = isDark ? '☀️' : '🌙';
+    document.getElementById('themeLabel').textContent = isDark ? 'โหมดสว่าง' : 'โหมดมืด';
+  }
+
+  // Default to system preference on load (in-memory only, no storage)
+  (function initTheme(){
+    var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if(prefersDark){
+      document.body.classList.add('dark');
+      document.getElementById('themeIcon').textContent = '☀️';
+      document.getElementById('themeLabel').textContent = 'โหมดสว่าง';
+    }
+  })();
+</script>
+
+</body>
+</html>
