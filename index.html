@@ -770,6 +770,40 @@
   @media (max-width:640px){
     .clock-box .clock-time{font-size:34px;}
   }
+
+  /* ---------- Live data status ---------- */
+  .live-status{font-size:11.5px;color:var(--muted);font-weight:600;margin-left:auto;}
+  .refresh-live-btn{border:1px solid var(--active-border);background:transparent;color:var(--active-accent);border-radius:999px;padding:5px 10px;font:600 11px inherit;cursor:pointer;}
+  .refresh-live-btn:hover{background:rgba(224,82,26,.08);}
+  .refresh-live-btn.is-loading{opacity:.6;pointer-events:none;}
+  .live-empty{padding:14px;border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-size:13px;}
+  .track-forecast-panel{margin-top:18px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:12px;}
+  .track-forecast-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+  .track-forecast-head h3{margin:0;color:var(--navy);font-size:15px;}
+  .track-forecast-head span{font-size:11.5px;color:var(--muted);}
+  .track-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;}
+  .track-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--row-alt);}
+  .track-card-head{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;background:var(--card);border-bottom:1px solid var(--border);}
+  .track-card-head strong{color:var(--navy);font-size:14px;}
+  .track-card-head span{color:var(--muted);font-size:11px;}
+  .track-svg{display:block;width:100%;height:230px;background:linear-gradient(180deg,rgba(125,190,225,.16),rgba(125,190,225,.04));}
+  body.dark .track-svg{background:linear-gradient(180deg,rgba(60,120,170,.18),rgba(20,35,52,.35));}
+  .track-gridline{stroke:var(--border);stroke-width:1;opacity:.7;}
+  .track-axis-label{fill:var(--muted);font-size:9px;font-family:inherit;}
+  .track-line-actual{fill:none;stroke:var(--navy-2);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+  .track-line-forecast{fill:none;stroke:var(--active-accent);stroke-width:3;stroke-dasharray:7 5;stroke-linecap:round;stroke-linejoin:round;}
+  .track-point-current{fill:var(--navy-2);stroke:var(--card);stroke-width:2;}
+  .track-point-forecast{fill:var(--active-accent);stroke:var(--card);stroke-width:2;}
+  .track-point-label{fill:var(--ink);font-size:9px;font-family:inherit;font-weight:700;}
+  .track-legend{display:flex;gap:12px;padding:8px 10px;color:var(--muted);font-size:10.5px;background:var(--card);border-top:1px solid var(--border);}
+  .track-legend i{display:inline-block;width:20px;border-top:3px solid var(--navy-2);vertical-align:middle;margin-right:4px;}
+  .track-legend i.forecast{border-top-color:var(--active-accent);border-top-style:dashed;}
+  .track-table{width:100%;min-width:0;font-size:11px;border-collapse:collapse;background:var(--card);}
+  .track-table th,.track-table td{padding:6px 8px;text-align:left;border-top:1px solid var(--border);}
+  .track-table th{color:var(--muted);font-weight:700;}
+  .track-disclaimer{margin:10px 0 0;color:var(--muted);font-size:10.5px;line-height:1.5;}
+  @media (max-width:640px){.track-grid{grid-template-columns:1fr;}.track-svg{height:210px;}}
+
 </style>
 </head>
 <body>
@@ -804,11 +838,12 @@
     <div class="active-panel-head">
       <span class="pulse-dot"></span>
       <h2>พายุที่กำลัง Active อยู่ในขณะนี้</h2>
-      <span class="active-count-pill">2 ลูก</span>
-      <span class="count">อัปเดตล่าสุด 2 กันยายน 2569</span>
+      <span class="active-count-pill" id="activeCount">2 ACTIVE</span>
+      <span class="count" id="liveStatus">กำลังตรวจสอบข้อมูลล่าสุด…</span>
+      <button class="refresh-live-btn no-print" id="refreshLiveBtn" onclick="refreshStormData(true)" title="รีเฟรชข้อมูลล่าสุด">↻ รีเฟรช</button>
     </div>
 
-    <div class="active-cards">
+    <div class="active-cards" id="activeCards">
       <div class="active-card">
         <div class="name-row">
           <span class="storm-en">SAUDEL <span style="font-weight:500;color:#94a3b8;">(โซเดล)</span><span class="cat-tag cat-td">พายุดีเปรสชันเขตร้อน</span></span>
@@ -949,7 +984,12 @@
       </div>
     </div>
 
-    <p class="active-panel-note">ข้อมูลความเร็วลม ความกดอากาศ และพิกัด อ้างอิงจากการรวบรวมของ Zoom Earth (ใช้ข้อมูลจาก JTWC/HKO/JMA) พิกัดที่แสดงเป็นค่าประมาณจากตำแหน่งอ้างอิง ณ เวลาที่ระบุ สถานะพายุเปลี่ยนแปลงได้ตลอดเวลา โปรดตรวจสอบแหล่งข้อมูลทางการก่อนตัดสินใจใด ๆ</p>
+    <section class="track-forecast-panel" aria-labelledby="trackForecastTitle">
+      <div class="track-forecast-head"><h3 id="trackForecastTitle">🗺️ Storm Track Forecast · พยากรณ์เส้นทางพายุ 3–5 วัน</h3><span>เส้นทึบ = ตำแหน่งล่าสุด · เส้นประ = แนวทางพยากรณ์และวงกลมความไม่แน่นอน</span></div>
+      <div class="track-grid" id="trackGrid"><div class="live-empty">กำลังโหลดเส้นทางพยากรณ์…</div></div>
+      <p class="track-disclaimer">เส้นทางพยากรณ์อ้างอิงจุดศูนย์กลางและวงกลมความน่าจะเป็นจาก JMA/RSMC Tokyo โดยจุดพยากรณ์มีความไม่แน่นอนเพิ่มขึ้นตามระยะเวลา ไม่ใช่ขอบเขตพื้นที่อันตราย ควรติดตามประกาศจากหน่วยงานท้องถิ่น</p>
+    </section>
+    <p class="active-panel-note">ข้อมูล Active ดึงจาก Japan Meteorological Agency (JMA), RSMC Tokyo ทุกครั้งที่เปิดหน้าและรีเฟรชอัตโนมัติทุก 5 นาที พิกัดและสถานะเป็นค่าจากรายงานล่าสุด โปรดตรวจสอบประกาศทางการก่อนตัดสินใจใด ๆ</p>
   </section>
 
   <div class="table-wrap">
@@ -1174,7 +1214,7 @@
   </div>
 
   <footer class="note">
-    สถานะพายุที่ Active อ้างอิงจากหอสังเกตการณ์ฮ่องกง (HKO) และสำนักอุตุนิยมวิทยาญี่ปุ่น (JMA) ณ วันที่ 1–2 กันยายน 2569 · โปรดติดตามประกาศทางการอย่างใกล้ชิดหากอยู่ในพื้นที่ที่อาจได้รับผลกระทบ
+    สถานะพายุที่ Active อ้างอิงจากรายงานล่าสุดของสำนักอุตุนิยมวิทยาญี่ปุ่น (JMA), RSMC Tokyo · โปรดติดตามประกาศทางการอย่างใกล้ชิดหากอยู่ในพื้นที่ที่อาจได้รับผลกระทบ
   </footer>
 
   <div class="toast" id="toast"></div>
@@ -1312,9 +1352,8 @@
 
   function sharePage(){
     try{
-      var summary = 'สถานะพายุหมุนเขตร้อนล่าสุด (2 ก.ย. 2569): ' +
-        'SAUDEL (โซเดล) พายุดีเปรสชันเขตร้อน ลม 55 กม./ชม. ใกล้ชายฝั่งกวางตุ้ง | ' +
-        'KROVANH (กรอวาญ) พายุโซนร้อน ลม 65 กม./ชม. มุ่งหน้าสู่ริวกิว';
+      var liveNames = lastStormPayload && lastStormPayload.storms ? lastStormPayload.storms.map(function(s){ return s.name + ' ' + (s.windKmh ? s.windKmh + ' กม./ชม.' : ''); }).join(' | ') : 'กำลังโหลดข้อมูลล่าสุด';
+      var summary = 'สถานะพายุหมุนเขตร้อนล่าสุด: ' + liveNames;
 
       // Web Share API requires a real http(s) URL — file:// pages can't use it.
       var isWebProtocol = /^https?:$/.test(window.location.protocol);
@@ -1345,6 +1384,129 @@
       showToast('เกิดข้อผิดพลาดขณะแชร์ กรุณาลองใหม่อีกครั้ง');
     }
   }
+
+
+  // ---------- Live storm data (JMA RSMC Tokyo) ----------
+  // The page must be served through server.py so /api/storms can proxy JMA without CORS errors.
+  var LIVE_REFRESH_MS = 5 * 60 * 1000;
+  var lastStormPayload = null;
+  var stormRefreshTimer = null;
+
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>'"]/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch];
+    });
+  }
+  function labelCategory(code, category){
+    var names = {TD:'ดีเปรสชันเขตร้อน',TS:'พายุโซนร้อน',STS:'พายุโซนร้อนกำลังแรง',TY:'ไต้ฝุ่น',STY:'ไต้ฝุ่นกำลังแรง'};
+    return names[code] || category || 'พายุหมุนเขตร้อน';
+  }
+  function gauge(code){
+    var order = ['TD','TS','STS','TY','STY'];
+    var idx = order.indexOf(code); if(idx < 0) idx = 0;
+    return '<div class="severity-gauge"><div class="gauge-track">' + order.map(function(item,i){
+      return '<span class="seg ' + (i <= idx ? 'filled-' + item.toLowerCase() : '') + '"></span>';
+    }).join('') + '</div><div class="gauge-labels">' + order.map(function(item,i){
+      return '<span class="' + (i === idx ? 'current' : '') + '">' + item + '</span>';
+    }).join('') + '</div></div>';
+  }
+  function formatThaiTime(value){
+    if(!value) return '-';
+    var d = new Date(value.replace(/\//g,'-') + ':00+09:00');
+    if(isNaN(d.getTime())) return value;
+    return new Intl.DateTimeFormat('th-TH-u-ca-buddhist', {timeZone:'Asia/Bangkok', dateStyle:'medium', timeStyle:'short'}).format(d);
+  }
+  function coordNumber(value){
+    var match = String(value || '').match(/(-?\d+(?:\.\d+)?)([NSEW])/i);
+    if(!match) return NaN;
+    var n = Number(match[1]);
+    return /[SW]/i.test(match[2]) ? -n : n;
+  }
+  function shortForecastTime(value){
+    if(!value) return '-';
+    var parts = value.split(' ');
+    return parts.length > 1 ? parts[0].split('/').slice(1).join('/') + ' ' + parts[1] : value;
+  }
+  function renderTrackForecast(payload){
+    var grid = document.getElementById('trackGrid');
+    if(!grid) return;
+    var storms = (payload.storms || []).filter(function(s){ return Array.isArray(s.track) && s.track.length >= 2; });
+    if(!storms.length){
+      grid.innerHTML = '<div class="live-empty">ยังไม่มีข้อมูลเส้นทางพยากรณ์จาก JMA ในขณะนี้</div>';
+      return;
+    }
+    grid.innerHTML = storms.map(function(s){
+      var points = s.track.map(function(p){ return Object.assign({}, p, {latN:coordNumber(p.lat), lonN:coordNumber(p.lon)}); }).filter(function(p){ return isFinite(p.latN) && isFinite(p.lonN); });
+      if(points.length < 2) return '';
+      var minLon=Math.min.apply(null,points.map(function(p){return p.lonN;})), maxLon=Math.max.apply(null,points.map(function(p){return p.lonN;}));
+      var minLat=Math.min.apply(null,points.map(function(p){return p.latN;})), maxLat=Math.max.apply(null,points.map(function(p){return p.latN;}));
+      var lonPad=Math.max(2,(maxLon-minLon)*.18), latPad=Math.max(2,(maxLat-minLat)*.22);
+      minLon-=lonPad; maxLon+=lonPad; minLat-=latPad; maxLat+=latPad;
+      var W=600,H=230,L=38,R=12,T=14,B=26;
+      function xy(p){ return {x:L+(p.lonN-minLon)/(maxLon-minLon)*(W-L-R), y:T+(maxLat-p.latN)/(maxLat-minLat)*(H-T-B)}; }
+      var actual=points.filter(function(p){return !p.isForecast;}), forecast=points.filter(function(p){return p.isForecast;});
+      var actualPath=actual.map(xy).map(function(q){return q.x.toFixed(1)+','+q.y.toFixed(1);}).join(' ');
+      var forecastPath=([actual[actual.length-1]].concat(forecast)).map(xy).map(function(q){return q.x.toFixed(1)+','+q.y.toFixed(1);}).join(' ');
+      var gridLines=[0,.5,1].map(function(t){var y=T+t*(H-T-B);return '<line class="track-gridline" x1="'+L+'" y1="'+y+'" x2="'+(W-R)+'" y2="'+y+'"/><text class="track-axis-label" x="4" y="'+(y+3)+'">'+(maxLat-(maxLat-minLat)*t).toFixed(1)+'°</text>';}).join('')+
+        [0,.5,1].map(function(t){var x=L+t*(W-L-R);return '<line class="track-gridline" x1="'+x+'" y1="'+T+'" x2="'+x+'" y2="'+(H-B)+'"/><text class="track-axis-label" x="'+(x-12)+'" y="'+(H-7)+'">'+(minLon+(maxLon-minLon)*t).toFixed(1)+'°</text>';}).join('');
+      var circles=points.map(function(p,i){var q=xy(p);var label=p.isForecast ? shortForecastTime(p.time) : 'ปัจจุบัน';return '<circle class="'+(p.isForecast?'track-point-forecast':'track-point-current')+'" cx="'+q.x.toFixed(1)+'" cy="'+q.y.toFixed(1)+'" r="'+(p.isForecast?4:6)+'"><title>'+esc(label)+' · '+esc(p.lat)+', '+esc(p.lon)+(p.radiusKm?' · รัศมี '+esc(p.radiusKm)+' กม.':'')+'</title></circle><text class="track-point-label" x="'+(q.x+6).toFixed(1)+'" y="'+(q.y-6).toFixed(1)+'">'+esc(label)+'</text>';}).join('');
+      var rows=points.filter(function(p){return p.isForecast;}).map(function(p){return '<tr><td>'+esc(shortForecastTime(p.time))+'</td><td>'+esc(p.lat)+', '+esc(p.lon)+'</td><td>'+esc(labelCategory(p.categoryCode,p.category))+'</td><td>'+(p.windKmh?esc(p.windKmh)+' กม./ชม.':'-')+'</td><td>'+(p.pressure?esc(p.pressure)+' hPa':'-')+'</td></tr>';}).join('');
+      return '<article class="track-card"><div class="track-card-head"><strong>'+esc(s.name)+'</strong><span>พยากรณ์ '+forecast.length+' จุด · สูงสุด 5 วัน</span></div><svg class="track-svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="เส้นทางพยากรณ์ '+esc(s.name)+'">'+gridLines+(actualPath?'<polyline class="track-line-actual" points="'+actualPath+'"/>':'')+(forecastPath?'<polyline class="track-line-forecast" points="'+forecastPath+'"/>':'')+circles+'</svg><div class="track-legend"><span><i></i>ตำแหน่งล่าสุด</span><span><i class="forecast"></i>พยากรณ์</span></div><table class="track-table"><thead><tr><th>เวลา (JST)</th><th>พิกัด</th><th>คาดหมาย</th><th>ลม</th><th>ความกดฯ</th></tr></thead><tbody>'+rows+'</tbody></table></article>';
+    }).join('');
+  }
+  function renderLiveStorms(payload){
+    var cards = document.getElementById('activeCards');
+    var count = document.getElementById('activeCount');
+    var status = document.getElementById('liveStatus');
+    if(!cards || !status) return;
+    var storms = Array.isArray(payload.storms) ? payload.storms : [];
+    count.textContent = storms.length + ' ACTIVE';
+    renderTrackForecast(payload);
+    if(!storms.length){
+      cards.innerHTML = '<div class="live-empty">ขณะนี้ JMA ไม่มีพายุที่มีรายงานภายใน 24 ชั่วโมงล่าสุด</div>';
+    } else {
+      cards.innerHTML = storms.map(function(s){
+        var movement = [s.direction, s.speedKmh ? s.speedKmh + ' กม./ชม.' : ''].filter(Boolean).join(' ');
+        var wind = s.windKmh ? s.windKmh + ' กม./ชม.' : (s.windMs ? s.windMs + ' ม./วิ' : '-');
+        return '<article class="active-card"><div class="name-row"><span class="storm-en">' + esc(s.name) + ' <span class="badge-active"><span class="dot"></span>LIVE</span></span><span class="storm-th">JMA #' + esc(s.number) + '</span></div>' +
+          '<div class="status-line"><b>' + esc(labelCategory(s.categoryCode, s.category)) + '</b> · รายงาน ' + esc(formatThaiTime(s.reportDateTime)) + '</div>' + gauge(s.categoryCode) +
+          '<div class="stat-grid"><div class="stat-item"><div class="stat-label">💨 ความเร็วลมสูงสุด</div><div class="stat-value">' + esc(wind) + (s.windKt ? ' <small>(~' + esc(s.windKt) + ' นอต)</small>' : '') + '</div></div>' +
+          '<div class="stat-item"><div class="stat-label">📉 ความกดอากาศศูนย์กลาง</div><div class="stat-value">' + esc(s.pressure || '-') + ' <small>hPa</small></div></div>' +
+          '<div class="stat-item"><div class="stat-label">📍 พิกัดโดยประมาณ</div><div class="stat-value">' + esc(s.lat || '-') + ', ' + esc(s.lon || '-') + '</div></div>' +
+          '<div class="stat-item"><div class="stat-label">🧭 ทิศทาง/ความเร็ว</div><div class="stat-value">' + esc(movement || '-') + '</div></div></div>' +
+          '<div class="updated-line">🕐 อัปเดตล่าสุดจาก JMA: ' + esc(formatThaiTime(s.reportDateTime)) + '</div>' +
+          '<div class="card-footer"><span class="meaning">ข้อมูลวิเคราะห์จาก RSMC Tokyo · JMA</span><a class="track-btn" href="' + esc(s.detailUrl) + '" target="_blank" rel="noopener">ดูข้อมูลทางการ ↗</a></div></article>';
+      }).join('');
+    }
+    var stamp = payload.fetchedAt ? new Date(payload.fetchedAt).toLocaleTimeString('th-TH') : '-';
+    status.textContent = (payload.partial ? 'อัปเดตบางส่วน' : 'อัปเดตแล้ว') + ' · ตรวจสอบ ' + stamp + (payload.source ? ' · JMA' : '');
+  }
+  async function refreshStormData(manual){
+    var status = document.getElementById('liveStatus');
+    var button = document.getElementById('refreshLiveBtn');
+    if(button) button.classList.add('is-loading');
+    if(status) status.textContent = manual ? 'กำลังรีเฟรชข้อมูลล่าสุด…' : 'กำลังโหลดข้อมูลล่าสุด…';
+    try{
+      var response = await fetch('/api/storms?ts=' + Date.now(), {cache:'no-store'});
+      if(!response.ok) throw new Error('HTTP ' + response.status);
+      lastStormPayload = await response.json();
+      renderLiveStorms(lastStormPayload);
+    }catch(err){
+      if(status) status.textContent = 'ใช้ข้อมูลสำรอง · เชื่อมต่อ JMA ไม่สำเร็จ';
+      console.warn('Live storm refresh failed:', err);
+    }finally{
+      if(button) button.classList.remove('is-loading');
+    }
+  }
+  function startLiveRefresh(){
+    refreshStormData(false); // always fetch on every page open
+    clearInterval(stormRefreshTimer);
+    stormRefreshTimer = setInterval(function(){ refreshStormData(false); }, LIVE_REFRESH_MS);
+  }
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden) refreshStormData(false); // refresh whenever the user returns to the tab
+  });
+  startLiveRefresh();
 
   // ---------- Live Thai date/time clock ----------
   function updateClock(){
